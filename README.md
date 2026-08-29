@@ -29,7 +29,7 @@ Optimizing primarily for **recall** on the canceled class, with **precision** an
 
 ## Roadmap
  
-1] **EDA** — understand distributions, missing values (`children`, `agent`, `company`), and cancellation patterns across hotel type, lead time, and market segment.
+1] **EDA** — understand distributions, missing values (`children`, `country`, `agent`, `company`), and cancellation patterns across hotel type, lead time, and market segment.
 
 2] **Feature engineering & model comparison** — encode the categorical columns for the models, engineer features (e.g. `total_stay_length`, `total_guests`) for ease of reading for the model, and compare at least 2–3 models for the sake of sanity (e.g. logistic regression, random forest, gradient boosting).
 
