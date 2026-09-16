@@ -31,7 +31,7 @@ Optimizing primarily for **recall** on the canceled class, with **precision** an
  
 1] **EDA** — understand distributions, missing values (`children`, `country`, `agent`, `company`), and cancellation patterns across hotel type, lead time, and market segment.
 
-2] **Feature engineering & model comparison** — encode the categorical columns for the models, engineer features (e.g. `total_stay_length`, `total_guests`) for ease of reading for the model, and compare at least 2–3 models for the sake of sanity (e.g. logistic regression, random forest, gradient boosting/XGBoost), including feature importance plots for interpretability..
+2] **Feature engineering & model comparison** — encode the categorical columns for the models, engineer features (e.g. `total_stay_length`, `total_guests`) for ease of reading for the model, and compare at least 2–3 models for the sake of sanity (e.g. logistic regression, random forest, gradient boosting/XGBoost), including feature importance plots for interpretability.Found XGBoost's importance heavily concentrated on deposit_type (a known dataset quirk tied to bulk agency bookings) while RandomForest's is more distributed — see **02_Baseline_Model.ipynb** for detail.
 
 3] **Hyperparameter tuning** — run GridSearchCV or RandomizedSearchCV on the best-performing model from step 2; log a before/after comparison table.
 
