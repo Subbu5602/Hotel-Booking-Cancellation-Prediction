@@ -24,7 +24,7 @@ A model that reliably flags high-risk bookings lets the hotel decide whether to 
 
 ## Success Metric
  
-Optimizing primarily for **recall** on the canceled class, with **precision** and **F1** as supporting metrics. A missed cancellation costs the business more than an unnecessary retention/deposit follow-up on a false positive — the model should err on the side of caution.
+Optimizing primarily for **F1** on the canceled class, balancing **recall** and **precision**. (Revised from an earlier recall-first framing — optimizing recall in isolation risks a model that over-flags cancellations to catch every one, so F1 better reflects the practical tradeoff between catching cancellations and avoiding unnecessary false alarms.)
  
 
 ## Roadmap
