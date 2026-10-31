@@ -29,10 +29,18 @@ Optimizing primarily for **F1** on the canceled class, balancing **recall** and 
 
 ## Roadmap
  
-1] **EDA** — understand distributions, missing values (`children`, `country`, `agent`, `company`), and cancellation patterns across hotel type, lead time, and market segment.
+1] **EDA** — ✅ Done. Understand distributions, missing values (`children`, `country`, `agent`, `company`), and cancellation patterns across hotel type, lead time, and market segment.
 
-2] **Feature engineering & model comparison** — encode the categorical columns for the models, engineer features (e.g. `total_stay_length`, `total_guests`) for ease of reading for the model, and compare at least 2–3 models for the sake of sanity (e.g. logistic regression, random forest, gradient boosting/XGBoost), including feature importance plots for interpretability.Found XGBoost's importance heavily concentrated on deposit_type (a known dataset quirk tied to bulk agency bookings) while RandomForest's is more distributed — see **02_Baseline_Model.ipynb** for detail.
+2] **Feature engineering & model comparison** — ✅ Done. Encoded categorical columns, compared 2 models (RandomForest, XGBoost) with feature importance plots for interpretability. Found XGBoost's importance heavily concentrated on `deposit_type` (a known dataset quirk tied to bulk agency bookings) while RandomForest's is more distributed — see **02_Baseline_Model.ipynb**. Separately engineered `cancel_ratio` and `first_timer` from booking history columns (**03_Feature_Engineering.ipynb**); both changed scores by under 0.002 across all metrics — a negative result, not a bug.
 
-3] **Hyperparameter tuning** — run GridSearchCV or RandomizedSearchCV on the best-performing model from step 2; log a before/after comparison table.
+3] **Hyperparameter tuning** — ✅ Done. Ran GridSearchCV and RandomizedSearchCV on RandomForest and XGBoost (80/20 stratified hold-out, refit on F1). RandomForest tuning barely moved the score (default settings were already near-optimal). XGBoost improved meaningfully: F1 0.778 → 0.820, recall 0.718 → 0.788. Selected model: RandomizedSearchCV-tuned XGBoost (F1 0.8199, recall 0.7879, precision 0.8546). See **04_HyperParameter_Tuning.ipynb** for the full results table and reasoning.
 
 4] **Evaluation & write-up** — assess the tuned model with recall/precision/F1/ROC-AUC, and summarize findings with recommendations for what a hotel could do next with these predictions to minimize loss.
+
+
+## What I'd do next
+
+- **Time-based validation split** — the current train/test split is random, which mixes 2015–2017 bookings together. A real hotel predicts future bookings from past ones; a chronological split (train on earlier arrival dates, test on the latest) would be a stricter, more realistic check of how the model holds up over time.
+- **Recall-weighted scoring** — try `fbeta_score` with `beta=2` (or similar) instead of plain F1, to more directly reflect that catching a cancellation matters more than avoiding a false alarm, without going as far as optimizing recall alone.
+- **A finer third tuning pass** — narrow the search further around RandomizedSearchCV's winning region (the current best XGBoost parameters) to check whether additional gains are available nearby.
+- **Imputation strategy consistency** — `02_Baseline_Model.ipynb` used median imputation for numeric columns; `src/preprocessing.py` (used from `03` onward) uses mean. Only `children` has missing values (4 rows), so this had no practical effect here, but it's worth standardizing on one strategy for consistency.
